@@ -23,6 +23,13 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
+
 tasks.named('test') {
-	useJUnitPlatform()
+	useJUnitPlatform() // JUnit5
+	systemProperty "file.encoding", "UTF-8"
+	testLogging {
+		events "passed", "skipped", "failed" // 성공/스킵/실패 표시
+		exceptionFormat "full"               // 예외 전체 스택 출력
+		showStandardStreams = true            // System.out/System.err 로그 출력
+	}
 }
