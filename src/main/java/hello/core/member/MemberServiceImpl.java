@@ -14,6 +14,24 @@ public class MemberServiceImpl implements MemberService {
     this.memberRepository = memberRepository;
   }
 
+  /*
+  public MemberServiceImpl(MemberRepository memberRepository) {
+    this.memberRepository = memberRepository;
+  }
+  이렇게 되면 MemberServiceImpl은 MemberRepository를 의존하지만 구현체가 뭐가 나올지를 모름
+  그래서 DIP를 지킨 것.
+  구현체의 결정은 "AppConfig"
+
+  관심사의 분리: 객체를 생성하고 연결하는 역할과 실행하는 역할이 분리됐다.
+
+  AppConfig -> 객체를 생성 및 연결
+
+  MemberServiceImpl -> 구현체를 받아서 실행
+
+  클라이언트인 memberServiceImpl 입장에서 보면 의존관계를 마치 외부에서 주입해주는 것 같다고 해서
+  DI(Dependency Injection)라고 부른다.
+   */
+
 
   @Override
   public void join(Member member) {

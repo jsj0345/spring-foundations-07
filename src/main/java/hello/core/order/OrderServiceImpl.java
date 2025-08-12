@@ -7,19 +7,51 @@ import hello.core.member.Member;
 import hello.core.member.MemberRepository;
 import hello.core.member.MemoryMemberRepository;
 
+/*
+관심사의 분리
+
+애플리케이션을 하나의 공연이라 생각해보자.
+각각의 인터페이스를 배역(배우 역할)이라 하자.
+그런데 이전 코드를 보면 배역에 맞는 배우를 선택하는 것은 누구인가?
+
+즉, 인터페이스 -> 배역, 구현체 -> 배우 라고 생각하자.
+이렇게 되면 배역 = 배우; 인데
+
+사실 인터페이스는 배역만 책임지면 된다. 배우를 책임질 필요가 없음.
+
+실제로도 배역을 누가 하느냐에 따라 소화만 하면 됨.
+
+따라서, 역할이 있으면 그 역할에만 집중해야함.
+
+기존 코드는 배우 역할이 배우를 지정하고 있으니까 웃긴것.
+
+즉, 기획 개발자가 배우를 정해야 할 판에 배우 역할이 배우를 정한다? 이게 말이 안된다.
+
+책임을 확실하게 분리해보자.
+ */
+
+
 // 주문 서비스 구현체
 public class OrderServiceImpl implements OrderService {
 
 
   /*
   private final MemberRepository memberRepository = new MemoryMemberRepository();
-
-
    */
   private final MemberRepository memberRepository;
   private final DiscountPolicy discountPolicy; // 인터페이스에만 의존.
   // final로 하는 이유는 무조건 초기화를 한번 해줘야함.
 
+  /*
+  private final MemberRepository memberRepository;
+  private final DiscountPolicy discountPolicy;
+
+  인터페이스에만 의존하도록 바꿈.
+
+  근데 이렇게 되면 구현체가 없으니까 실행 불가 null로 초기화될테니.
+
+  이 문제를 해결하려면 누군가가 클라이언트인 OrderServiceImpl에 DiscountPolicy 의 구현 객체를 대신 생성하고 넣어줘야함.
+   */
 
   /*
   AppConfig에서 알아서 구체적으로 주입을 하니까 OrderServiceImpl은 내부에 있는 메서드 실행 이런거나 잘하면 된다.
@@ -29,6 +61,13 @@ public class OrderServiceImpl implements OrderService {
     this.memberRepository = memberRepository;
     this.discountPolicy = discountPolicy;
   } // 역할과 책임을 적절하게 분리함. 원래 구체적인 클래스를 뭘 써야 할지 봤어야 했는데 그럴 필요 없어짐. (SRP를 지킴)
+
+  /*
+  public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+    this.memberRepository = memberRepository;
+    this.discountPolicy = discountPolicy;
+  }
+   */
 
   /*
   private final DiscountPolicy discountPolicy = new FixDiscountPolicy();

@@ -73,5 +73,11 @@ class OrderServiceTest {
   // 테스트를 여러개 돌리고싶으면 각 패키지의 상위 패키지에다가 우클릭해서 Run.
 
 
+@BeforeEach
+public void beforeEach() {
+  AppConfig appConfig = new AppConfig();
+  memberService = appConfig.memberService();
+  orderService = appConfig.orderService();
+}
 
  */
