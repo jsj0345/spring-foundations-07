@@ -69,4 +69,29 @@ public class OrderApp {
   }
 
 }
+
+
+public class OrderApp {
+
+  public static void main(String[] args) {
+    // AppConfig appConfig = new AppConfig();
+    // MemberService memberService = appConfig.memberSerivce();
+    // OrderService orderService = appConfig.orderService();
+
+    ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
+    자바에서 객체를 생성 한 다음에 객체 참조값을 통해 메서드나 멤버 변수에 접근 하는 것 처럼 스프링도 이러한 과정을 해줘야함.
+    MemberService memberService = applicationContext.getBean("memberService", MemberService.class);
+    OrderService orderService = applicationContext.getBean("orderService", OrderService.class);
+
+    long memberId = 1L;
+    Member member = new Member(1L, "memberA", Grade.VIP);
+    memberService.join(member);
+
+    Order order = orderService.createOrder(memberId, "itemA", 10000);
+
+    System.out.println(order);
+  }
+
+}
+
  */

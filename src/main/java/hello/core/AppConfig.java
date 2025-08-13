@@ -13,6 +13,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration // 애플리케이션의 구성 정보를 담당함.
 public class AppConfig { // 애플리케이션 전체를 설정하고 구성한다는 의미로 지음.
 
+  /*
+  @Bean들을 보면 public 접근 제어자임.
+  private으로 저번에 했다가 스프링 실행 안 된적 있음. 주의!
+   */
+
   @Bean
   public MemberService memberService() { // 생성자 주입 방식
     return new MemberServiceImpl(memberRepository());
@@ -166,6 +171,30 @@ public class AppConfig {
   }
 
 }
+
+@Configuration // 애플리케이션의 구성 정보를 담당함
+public class AppConfig {
+
+  @Bean
+  public MemberService memberService() {
+    return new MemberServiceImpl(memberRepository());
+  }
+
+  @Bean
+  public MemberRepository memberRepository() {
+    return new MemoryMemberRepository();
+  }
+
+  @Bean
+  public OrderService orderService() {
+    return new OrderServiceImpl(memberRepository(), discountPolicy());
+  }
+
+  @Bean
+  public DiscountPolicy discountPolicy() {
+    return new RateDiscountPolicy();
+  }
+
 
 
  */
