@@ -73,6 +73,33 @@ public class MemberApp {
 
 }
 
+public class MemberApp {
+
+  public static void main(String[] args) {
+    //AppConfig appConfig = new AppConfig();
+    //MemberService memberService = appConfig.memberService(); // 윗줄이랑 지금 해당되는 줄은 appConfig에서 필요할 때 직접 호출,
+
+    어찌됐든.. 객체를 생성을 한 다음에 호출을 해야함. 이걸 스프링 방식으로 바꿔보자.
+    스프링 방식으로 바꾸려면??
+
+    ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class); // 이 코드의 뜻은 AppConfig 안에 있는 Bean 어노테이션인 애들을 스프링 빈으로 등록. 즉, 객체로 등록.
+    근데 등록을 하더라도 반환값을 스프링 빈으로 등록하는것임. 빈의 이름은 메서드 이름.
+
+    MemberService memberService = applicationContext.getBean("memberService", MemberService.class); // 빈들중에서 memberService라는애를 찾고 MemberService형으로 반환해라.
+
+
+
+    Member member = new Member(1L, "memberA", Grade.VIP);
+    memberService.join(member);
+
+    Member findMember = memberService.findById(1L);
+    System.out.println("new member = " + member.getName());
+    System.out.println("find Member = " + findMember.getName());
+  }
+
+}
+
+
 
 
  */
