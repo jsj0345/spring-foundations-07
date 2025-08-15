@@ -195,6 +195,38 @@ public class AppConfig {
     return new RateDiscountPolicy();
   }
 
+___________________________________________________________________________________
+
+@Configuration
+public class AppConfig {
+
+  @Bean
+  public MemberService memberService() {
+    return new MemberServiceImpl(memberRepository());
+  }
+
+  @Bean
+  public OrderService orderService() {
+    return new OrderServiceImpl(memberRepository(), DiscountPolicy());
+  }
+
+  @Bean
+  public MemberRepository memberRepository() {
+    return new MemoryMemberRepository();
+  }
+
+  @Bean
+  public DiscountPolicy discountPolicy() {
+    return new RateDiscountPolicy();
+  }
+
+}
+
+AppConfig에 설정을 구성한다는 뜻의 @Configuration을 붙여준다.
+
+각 메서드에 @Bean을 붙여준다. 이렇게 하면 스프링 컨테이너에 스프링 빈으로 등록한다.
+
+
 
 
  */

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="memberService" class="hello.core.member.MemberServiceImpl">
+        <constructor-arg name="memberRepository" ref="memberRepository" />
+    </bean>
+    <bean id="memberRepository"
+          class="hello.core.member.MemoryMemberRepository" />
+    <bean id="orderService" class="hello.core.order.OrderServiceImpl">
+        <constructor-arg name="memberRepository" ref="memberRepository" />
+        <constructor-arg name="discountPolicy" ref="discountPolicy" />
+    </bean>
+    <bean id="discountPolicy" class="hello.core.discount.RateDiscountPolicy" />
+</beans>
+
+<!--
+
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http:www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id ="memberService" class="hello.core.member.MemberServiceImpl">
+      <constructor-arg name="memberRepository" ref="memberRepository" />
+    </bean>
+    <bean id="memberRepository"
+          class="hello.core.member.MemoryMemberRepository" />
+    <bean id="orderService" class="hello.core.order.OrderServiceImpl">
+      <constructor-arg name="memberRepository" ref="memberRepository" />
+      <constructor-arg name="discountPolicy" ref="discountPolicy" />
+    </bean>
+    <bean id="discountPolicy" class="hello.core.discount.RateDiscountPolicy" />
+</beans>
+
+
+
+
+
+짰던 코드에서
+
+getBean("memberService", MemberServiceImpl.class);
+getBean("memberRepository", MemoryMemberRepository.class);
+getBean("orderService", OrderServiceImpl.class);
+getBean("discountPolicy", DiscountPolicy.class);
+
+XML 쪽이 등록 시점에 타입이 고정돼서 “이 빈은 무조건 이 클래스”라는 게 정해지지만,
+getBean은 조회 시점에 타입을 바꿔서 꺼낼 수 있으니까 더 유연하다고도 볼 수 있음.
+-->

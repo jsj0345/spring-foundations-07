@@ -113,6 +113,59 @@ public MemberService memberService() { // 생성자 주입 방식
 
 - 위에서 "오해 하지 말 것"에서 설명 했듯이, 반환형이 Bean으로 등록되는거고 Bean의 이름은 "메서드 이름". 
 
+## 7. BeanFactory와 ApplicationContext
+
+BeanFactory 
+
+- 스프링 컨테이너의 최상위 인터페이스다.
+- 스프링 빈을 관리하고 조회하는 역할을 담당한다.
+- getBean()을 제공한다.
+- 지금까지 배운 범위에서 사용했던 대부분의 기능은 BeanFactory가 제공하는 기능이다. (ex. getBean())
+
+ApplicationContext
+
+- BeanFactory 기능을 모두 상속 받아서 제공한다.
+- 빈을 관리하고 검색하는 기능을 BeanFactory가 제공해주는데, 그러면 둘의 차이가 뭘까?
+- 애플리케이션을 개발할 때는 빈을 관리하고 조회하는 기능은 물론이고, 수 많은 부가 기능이 필요함.
+
+ApplicationContext가 제공하는 부가기능
+
+ApplicationContext는 MessageSource, EnvironmentCapable, ApplicationEventPublisher, ResourceLoader를 상속 받음. 
+
+- MessageSource : 메시지 소스를 활용한 국제화 기능 ex) 한국에서 들어오면 한국어, 영어권에서 들어오면 영어
+- EnvironmentCapable : 로컬,개발,운영등을 구분해서 처리.
+- ApplicationEventPublisher : 이벤트를 발행하고 구독하는 모델을 편리하게 지원.
+- ResourceLoader : 파일, 클래스패스, 외부 등에서 리소스를 편리하게 조회.
+
+## 8. 스프링 빈 설정 메타 정보 - BeanDefinition
+
+- 스프링은 자바 코드, XML 파일을 읽어서 빈을 등록한다. 이런걸 보면 다양한 것들을 읽는다. 어떻게 읽는걸까?
+
+코드를 한번 보자.
+
+**예시 코드**
+public class AnnotationConfigApplicationContext extends GenericApplicationContext implements AnnotationConfigRegistry {
+  private final AnnotatedBeanDefinitionReader reader;
+  private final ClassPathBeanDefinitionScanner scanner;
+  
+  ....
+
+}
+
+코드의 일부를 따왔다. 여기서 보면 reader라는 변수로 AppConfig.class를 읽고 BeanDefintion을 생성한다. 
+
+**예시 코드2**
+public class GenericXmlApplicationContext extends GenericApplicationContext {
+  private final XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(this);
+
+   ...
+}
+
+여기서도 reader를 통해 BeanDefiniton을 생성. 
+
+BeanDefinition에는 많은 정보들이 있음. 암튼 reader를통해 자바 코드, XML 파일을 읽어서 빈의 메타 정보를 알려줌. 
+
+
 
 
 
