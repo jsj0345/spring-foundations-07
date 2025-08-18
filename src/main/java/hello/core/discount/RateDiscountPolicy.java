@@ -35,5 +35,27 @@ public class RateDiscountPolicy implements DiscountPolicy {
 
 }
 
+_____________________________________________________________________-
+
+인터페이스를 만들어서 구현체만 작성해주면 원하는 클래스로 바꾸고 싶을때 부담이 없음!!
+
+public class RateDiscountPolicy implements DiscountPolicy {
+
+  //정률 할인 정책
+
+  private int discountPercent = 10; // 10% 할인.
+
+  @Override
+  public int discount(Member member, int price) {
+
+    if(member.getGrade() == Grade.VIP) {
+      return price * discountPercent / 100;
+    } else {
+      return 0;
+    }
+ }
+
+}
+
 
  */

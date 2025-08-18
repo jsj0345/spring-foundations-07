@@ -13,6 +13,14 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.Map;
 
+/*
+부모 타입으로 조회하면, 자식 타입도 함께 조회한다.
+그래서 모든 자바 객체의 최고 부모인 Object 타입으로 조회하면, 모든 스프링 빈을 조회한다.
+
+getBean("이름", 클래스형)은 등록된 빈중 같은 이름인 빈을 찾고 클래스형을 반환하는데 호환 가능한 형인지 보는것.
+ getBean(클래스형)은 등록된 빈중 클래스형과 호환 가능한 빈을 찾는다.
+ */
+
 public class ApplicationContextExtendsFindTest {
 
   AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(TestConfig.class);
@@ -209,6 +217,68 @@ class ApplicationContextExtendsFindTest {
   }
 
 }
+
+___________________________________________________________________________
+
+class ApplicationContextExtendsFindTest {
+
+  AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(TestConfig.class);
+
+  @Test
+  @DisplayName("부모 타입으로 조회시, 자식이 둘 이상 있으면, 중복 오류가 발생한다.")
+  void findBeanByParentTypeDuplicate() {
+    // DiscountPolicy bean = ac.getBean(DiscountPolicy.class);
+    Assertions.assertThrows(NoUniqueBeanDefinitionException.class, () -> ac.getBean(DiscountPolicy.class));
+  }
+
+  @Test
+  @DisplayName("부모 타입으로 조회시, 자식이 둘 이상 있으면, 빈 이름을 지정하면 된다.")
+  void findBeanByParentTypeBeanName() {
+    DiscountPolicy rateDiscountPolicy = ac.getBean("rateDiscountPolicy", DiscountPolicy.class);
+    assertThat(rateDiscountPolicy).isInstanceOf(RateDiscountPolicy.class);
+  }
+
+  @Test
+  @DisplayName("특정 하위 타입으로 조회")
+  void findBeanBySubType() {
+    RateDiscountPolicy bean = ac.getBean(RateDiscountPolicy.class);
+    assertThat(bean).isInstanceOf(RateDiscountPolicy.class);
+  }
+
+  @Test
+  @DisplayName("부모 타이븡로 모두 조회하기")
+  void findAllBeanByParentType() {
+    Map<String, DiscountPolicy> beansOfType = ac.getBeansOfType(DiscountPolicy.class);
+    Assertions.assertThat(beansOfType.size()).isEqualTo(2);
+    for (String key : beansOfType.keySet()) {
+      System.out.println("key = " + key + ", value = " + beansOfType.get(key));
+    }
+  }
+
+  @Configuration
+  static class TestConfig {
+
+    @Bean
+    public DiscountPolicy rateDiscountPolicy() {
+      return new RateDiscountPolicy();
+    }
+
+    @Bean
+    public DiscountPolicy fixDiscountPolicy() {
+      return new FixDiscountPolicy();
+    }
+
+  }
+
+ }
+
+
+
+
+
+
+
+
 
 
 

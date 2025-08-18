@@ -66,4 +66,30 @@ public class MemoryMemberRepository implements MemberRepository {
   }
 
 }
+
+----------------------------------------------------------------------------
+
+package hello.core.member;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class MemoryMemberRepository implements MemberRepository {
+
+  private static Map<Long, Member> store = new HashMap<>();
+
+  @Override
+  public void save(Member member) {
+    store.put(member.getId(), member); // store를 데이터 베이스라고 생각하고 id 및 객체 저장.
+  }
+
+  @Override
+  public Member findById(Long memberId) {
+    return store.get(memberId); // Id를 이용해서 회원 정보 조회
+  }
+
+}
+
+참고 : HashMap은 동시성 이슈가 발생할 수 있다. 이런 경우 ConcurrentHashMap을 이용해보자.
+
  */

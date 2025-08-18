@@ -119,6 +119,52 @@ public class MemberApp {
 }
 
 
+________________________________________________________________________________________
+
+package hello.core;
+
+import hello.core.member.Grade;
+import hello.core.member.Member;
+import hello.core.member.MemberService;
+import hello.core.member.MemberServiceImpl;
+
+public class MemberApp {
+
+  // 어느 때와 다를것 없이 자바 코드로 데이터 직접 조회
+  // 애플리케이션 로직으로 이렇게 메인 메서드에서 조회 하는 것은 좋지 않음. Junit을 활용해보자.
+  public static void main(String[] args) {
+    MemberService memberService = new MemberServiceImpl();
+    Member member = new Member(1L, "memberA", Grade.VIP);
+    memberService.join(member);
+
+    Member findMember = memberService.findById(1L);
+    System.out.println("new Member = " + member);
+    System.out.println("find Member = " + findMember);
+  }
+
+}
+
+___________________________________________________________________________
+
+public class MemberApp {
+
+  public static void main(String[] args) {
+    //AppConfig appConfig = new AppConfig();
+    //MemberService memberService = appConfig.memberService();
+    ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
+    MemberService memberService = applicationContext.getBean("memberService", MemberService.class);
+    Member member = new Member(1L, "memberA", Grade.VIP);
+    memberService.join(member);
+
+    Member findMember = memberService.findById(1L);
+    System.out.println("new member = " + member.getName());
+    System.out.println("find Member = " + findMember.getName());
+  }
+
+}
+
+
+
 
 
 

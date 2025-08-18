@@ -226,6 +226,37 @@ AppConfig에 설정을 구성한다는 뜻의 @Configuration을 붙여준다.
 
 각 메서드에 @Bean을 붙여준다. 이렇게 하면 스프링 컨테이너에 스프링 빈으로 등록한다.
 
+애플리케이션의 전체 동작 방식을 구성(config) 하기 위해, 구현 객체를 생성하고, 연결하는 책임을 가지는 별도의 설정 클래스를 만들자.
+
+package hello.core;
+
+@Configuration
+public class AppConfig {
+
+  @Bean
+  public MemberService memberService() {
+    return new MemberServiceImpl(memberRepository());
+  }
+
+  @Bean
+  public OrderService orderService() {
+    return new OrderServiceImpl(memberRepository(), discountPolicy());
+  }
+
+  @Bean
+  public MemberRepository memberRepository() {
+    return new MemoryMemberRepository();
+  }
+
+  @Bean
+  public DiscountPolicy discountPolicy() {
+    return new RateDiscountPolicy();
+  }
+
+  클라이언트인 memberServiceImpl 입장에서 보면 의존관계를 마치 외부에서 주입해주는 것 같다고 할수있음. (DI)
+}
+
+
 
 
 

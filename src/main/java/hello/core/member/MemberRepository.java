@@ -21,3 +21,18 @@ public interface MemberRepository {
 
 }
  */
+
+/*
+
+회원 저장소 인터페이스(데이터 넣기 및 조회)
+
+package hello.core.member;
+
+public interface MemberRepository {
+
+  void save(Member member);
+
+  Member findById(Long memberId);
+}
+
+ */

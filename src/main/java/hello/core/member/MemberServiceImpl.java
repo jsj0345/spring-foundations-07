@@ -81,4 +81,35 @@ public class MemberServiceImpl implements MemberService {
 
 }
 
+_____________________________________________________________________
+
+package hello.core.member;
+
+public class MemberServiceImpl implements MemberService {
+
+  private final MemberRepository memberRepository;
+
+  public MemberServiceImpl(MemberRepository memberRepository) {
+    this.memberRepository = memberRepository; // 이제 MemberServiceImpl은 어떤 구체클래스가 들어올지 모름. (의존하지 않음.)
+    // 물론 인터페이스는 의존!
+    // 즉 이제 역할을 지정 해 줄 필요없이 본인의 역할에만 충실하면 된다.
+  }
+
+  // 다형성 활용
+
+  public void join(Member member) {
+    memberRepository.save(member); // 데이터베이스(store)에 데이터 저장
+  }
+
+  public Member findMember(Long memberId) {
+    return memberRepository.findById(memberId); // id를 이용해서 회원 조회.
+
+    // store.get(memberId);
+  }
+
+}
+
+
+
+
  */

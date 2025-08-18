@@ -152,6 +152,51 @@ public class OrderServiceImpl implements OrderService {
 
 }
 
+public class OrderServiceImpl implements OrderService {
 
+  private final MemberRepository memberRepository = new MemoryMemberRepository();
+
+  private final DiscountPolicy discountPolicy = new FixDiscountPolicy();
+
+  // 구체적인 클래스에 의존함 DIP를 준수하지 못함. 또한 주문서비스는 주문에 관한것만 책임 져야하는데 무슨 할인정책을 갖고와야하는지 등을 신경써야함.
+  즉, SRP도 안지킴. DIP란? (Dependency Inversion Principle - 의존성 역전 원칙)
+  SRP는 (Single Responsibility Principle)
+
+  @Override
+  public Order createOrder(Long memberId, String itemName, int itemPrice) {
+    Member member = memberRepository.findById(memberId);
+    int discountPrice = discountPolicy.discount(member, itemPrice);
+    return new Order(memberId, itemName, itemPrice, discountPrice);
+  }
+
+}
+
+public class OrderServiceImpl implements OrderService {
+
+  // private final DiscountPolicy discountPolicy = new RateDiscountPolicy();
+  이렇게 고치면 코드 내부를 고칠 것 없어서 편하다.
+
+  하지만 여기서 중요한건 너무 구체적으로 참조해서 클라이언트에서 다른 정율정책을 필요로 할때 마다 객체 생성을 할 때, 이름을 바꿔줘야한다.
+
+  이러면 좀 난감하다. 구체적 의존으로 인해 DIP를 못 지킴.
+
+  그리고 좋은 객체 지향 프로그래밍은 확장에는 개방적이여야 하나 코드를 변경하는거에는 폐쇄적이여야한다.
+
+  근데 위 코드를 보면 변경하는거에 폐쇄적이지 않음. (OCP 원칙 준수 X 동시에 SRP도 준수하지않음.)
+
+  클라이언트 코드를 고치지 않고 확장만 하려고하면 인터페이스에만 의존 해야함. 방법을 찾아보자.
+}
+
+public class OrderServiceImpl implements OrderService {
+
+  private final MemberRepository memberRepository;
+  private final DiscountPolicy discountPolicy;
+
+  public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+    this.memberRepository = memberRepository;
+    this.discountPolicy = discountPolicy;
+  }
+
+}
 
  */
