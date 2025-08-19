@@ -16,20 +16,45 @@ public class AppConfig { // 애플리케이션 전체를 설정하고 구성한�
   /*
   @Bean들을 보면 public 접근 제어자임.
   private으로 저번에 했다가 스프링 실행 안 된적 있음. 주의!
+
+  AppConfig 코드를 보면 재밌는 점이 하나 있다. (싱글톤을 배운 이후)
+  원래 스프링은 하나의 객체를 갖는 싱글톤 패턴이다.
+  그런데.. 두개의 빈을 살펴보자..
+
+  @Bean memberService() -> memberRepository()를 호출.
+  @Bean orderService() -> memberRepository()를 호출.
+
+  총 두번 호출한다. 이러면 객체를 두번 생성한다. 싱글톤 패턴을 사용 하지 않는것 같다.
+
+  한번 테스트를 해보자.
+
+  테스트를 한 결과 그렇지 않다. 한번만 호출한다.
+
+   */
+
+  /*
+  한번 더 테스트를 해보기 위해 이번엔 각 메서드마다 call 클래스명.메서드이름을 추가했다.
+
+  먼저, memberService.getMemberRepository 메서드를 보면..
+
    */
 
   @Bean
-  public MemberService memberService() { // 생성자 주입 방식
+  public MemberService memberService() {
+    // 생성자 주입 방식
+    System.out.println("call AppConfig.memberService"); // soutm
     return new MemberServiceImpl(memberRepository());
   }
 
   @Bean
   public MemberRepository memberRepository() {
+    System.out.println("call AppConfig.memberRepository");
     return new MemoryMemberRepository(); // 중복 방지 (역할이 매우 명확함)
   }
 
   @Bean
   public OrderService orderService() {
+    System.out.println("call AppConfig.orderService");
     return new OrderServiceImpl(memberRepository(), discountPolicy());
   }
 

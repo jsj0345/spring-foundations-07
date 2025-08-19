@@ -6,6 +6,8 @@ import hello.core.discount.RateDiscountPolicy;
 import hello.core.member.Member;
 import hello.core.member.MemberRepository;
 import hello.core.member.MemoryMemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /*
 관심사의 분리
@@ -32,6 +34,7 @@ import hello.core.member.MemoryMemberRepository;
 
 
 // 주문 서비스 구현체
+@Component
 public class OrderServiceImpl implements OrderService {
 
 
@@ -57,6 +60,7 @@ public class OrderServiceImpl implements OrderService {
   AppConfig에서 알아서 구체적으로 주입을 하니까 OrderServiceImpl은 내부에 있는 메서드 실행 이런거나 잘하면 된다.
   뭐가 주입 될지 신경 쓸 필요가 없다.
    */
+  @Autowired
   public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
     this.memberRepository = memberRepository;
     this.discountPolicy = discountPolicy;
@@ -110,6 +114,20 @@ public class OrderServiceImpl implements OrderService {
   위 메서드를 보면 주문 서비스 객체는 회원 정보와 할인 가격만 관심이 있지 내부 관심이없음.
   이러한 이유로 인터페이스나 추상 클래스에만 의존하는게 좋음.
    */
+
+  // 테스트 용도 (싱글톤이 적용되는지를 보기 위함.)
+  public MemberRepository getMemberRepository() {
+    return memberRepository;
+  }
+
+  /*
+  // 테스트 용도
+
+  public MemberRepository getMemberRepository() {
+    return memberRepository;
+  }
+
+  */
 }
 
 /*

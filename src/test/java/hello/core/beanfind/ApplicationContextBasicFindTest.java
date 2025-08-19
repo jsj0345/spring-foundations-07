@@ -53,7 +53,7 @@ class ApplicationContextBasicFindTest {
   @DisplayName("빈 이름으로 조회X")
   void findBeanByNameX() {
     // ac.getBean("xxxx", MemberService.class);
-    MemberService xxxx = ac.getBean("xxxxx", MemberService.class); // NoSuchBeanDefinitionException 예외 발생
+    //MemberService xxxx = ac.getBean("xxxxx", MemberService.class); // NoSuchBeanDefinitionException 예외 발생
     org.junit.jupiter.api.Assertions.assertThrows(NoSuchBeanDefinitionException.class,
         () -> ac.getBean("xxxxx", MemberService.class)); // 오른쪽에 있는 로직을 실행하면 왼쪽에 있는 예외가 터져야함.
   }

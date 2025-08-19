@@ -1,6 +1,10 @@
 package hello.core.member;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 // 회원 서비스 구현체
+@Component
 public class MemberServiceImpl implements MemberService {
 
   //private final MemberRepository memberRepository = new MemoryMemberRepository();
@@ -8,6 +12,7 @@ public class MemberServiceImpl implements MemberService {
 
   private final MemberRepository memberRepository; // 추상화에만 의존.
 
+  @Autowired // MemberRepository 타입에 맞는 것을 찾아서 자동으로 주입해줌.
   public MemberServiceImpl(MemberRepository memberRepository) {
     // 원래는 구체적인 클래스를 의존하는데 이제 memberRepository에 뭐가 들어올지 모름 결과적으로는 인터페이스만 의존.
     // 구체적인 클래스는 AppConfig만 알 수 있음 MemberServiceImpl은 알 길이 없음.
@@ -42,6 +47,19 @@ public class MemberServiceImpl implements MemberService {
   public Member findMember(Long memberId) {
     return memberRepository.findById(memberId);
   }
+
+  // 테스트 용도로 추가. (싱글톤이 적용 되는지를 보기 위함.)
+  public MemberRepository getMemberRepository() {
+    return memberRepository;
+  }
+
+  /*
+
+  // 테스트 용도로 추가. (싱글톤이 적용 되는지를 보기 위함.)
+  public MemberRepository getMemberRepository() {
+    return memberRepository;
+  }
+  */
 }
 
 /*
