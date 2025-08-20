@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 // 메모리 회원 저장소 구현체
-@Component
+@Component // 컴포넌트는 자동으로 스캔하면서 등록됨.
 public class MemoryMemberRepository implements MemberRepository{
 
   private static Map<Long, Member> store = new HashMap<>(); // 데이터베이스라 가정.

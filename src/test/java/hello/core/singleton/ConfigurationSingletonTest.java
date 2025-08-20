@@ -143,4 +143,71 @@ getBean은 클래스형을 내놓는거지 빈을 직접적으로 호출하진 �
 결론 이미 빈을 저 위에 코드로 등록했기 때문에 CGLIB 코드에서 무조건 if문에서 else 가지도 않고 if 문 안에서 끝나는 것.
 
 
+public class ConfigurationSingletonTest {
+
+  @Test
+  void configurationTest() {
+    ApplicationContext ac = new AnnotationConfigApplicationContext(AppConfig.class);
+    MemberServiceImpl memberService = ac.getBean("memberService", MemberServiceImpl.class);
+    OrderServiceImpl orderService = ac.getBean("orderService", OrderServiceImpl.class);
+
+    // 모두 같은 인스턴스를 참고하고 있다.
+    System.out.println("memberService -> memberRepository = " + memberService.getMemberRepository());
+    System.out.println("orderService -> memberRepository = " + orderService.getMemberRepository());
+    System.out.println("memberRepository = " + memberRepository);
+
+    Assertions.assertThat(memberService.getMemberRepository()).isSameAs(memberRepository);
+    Assertions.assertThat(orderService.getMemberRepository()).isSameAs(memberRepository);
+  }
+
+
+  @Test
+  void configurationDeep() {
+    ApplicationContext ac = new AnnotationConfigApplicationContext(AppConfig.class);
+
+    // AppConfig도 스프링 빈으로 등록된다.
+    AppConfig bean = ac.getBean(AppConfig.class);
+
+    System.out.println("bean = " + bean.getClass());
+
+    // 출력: bean = class hello.core.AppConfig$$SpringCGLIB$$0
+  }
+
+  왜 CGLIB이 나올까? 원래 정상적으로 나온다면 class hello.core.AppConfig일 것이다.
+
+  그런데 예상과는 다르게 CGLIB이 붙어있다. 이것은 내가 만든 클래스가 아니라
+
+  스프링이 CGLIB이라는 바이트코드 조작 라이브러리를 사용해서 AppConfig 클래스를 상속받은
+
+  임의의 다른 클래스를 만들고, 그 다른 클래스를 스프링 빈으로 등록한 것이다!
+
+  이러한 임의의 다른 클래스가 싱글톤이 보장되도록 해준다.
+
+  아마도 다음과 같이 바이트 코드를 조작해서 작성되어 있을 것이다.
+
+
+  @Bean
+  public MemberRepository memberRepository() {
+
+    if (memoryMemberRepository가 이미 스프링 컨테이너에 등록되어 있으면?) {
+      return 스프링 컨테이너에서 찾아서 반환;
+    } else {
+      기존 로직을 호출해서 MemoryMemberRepository를 생성하고 스프링 컨테이너에 등록
+      return 반환
+    }
+
+  }
+
+  @Bean이 붙은 메서드마다 이미 스프링 빈이 존재하면 존재하는 빈을 반환하고, 스프링 빈이 없으면 생성해서
+  스프링 빈으로 등록하고 반환하는 코드가 동적으로 만들어진다.
+
+  덕분에 싱글톤이 보장됨.
+
+}
+
+
+
+
+
+
  */

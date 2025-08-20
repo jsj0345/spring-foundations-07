@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 // 회원 서비스 구현체
+//@Component("Service")
 @Component
 public class MemberServiceImpl implements MemberService {
 

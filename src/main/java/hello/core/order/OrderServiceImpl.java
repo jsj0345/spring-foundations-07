@@ -34,6 +34,7 @@ import org.springframework.stereotype.Component;
 
 
 // 주문 서비스 구현체
+//@Component("Service")
 @Component
 public class OrderServiceImpl implements OrderService {
 

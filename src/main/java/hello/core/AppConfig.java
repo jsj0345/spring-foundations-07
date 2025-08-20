@@ -61,6 +61,7 @@ public class AppConfig { // 애플리케이션 전체를 설정하고 구성한�
   @Bean
   public DiscountPolicy discountPolicy() {
     //return new FixDiscountPolicy(); // 중복 방지 (역할이 매우 명확함)
+    System.out.println("call AppConfig.discountPolicy");
     return new RateDiscountPolicy();
   }
 
