@@ -19,12 +19,15 @@ public class OrderServiceTest {
   MemberService memberService;
   OrderService orderService;
 
+  /*
   @BeforeEach
   public void beforeEach() {
     AppConfig appConfig = new AppConfig();
     memberService = appConfig.memberService();
     orderService = appConfig.orderService();
   }
+
+   */
 
   // 제대로 동작 하는지 테스트. 할인 금액이랑 일치 하는지를 봄.
   @Test

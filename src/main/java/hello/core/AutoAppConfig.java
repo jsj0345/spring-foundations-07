@@ -58,6 +58,7 @@ public class AutoAppConfig {
   }
   */
 
+
   //-> 이대로 돌려도 AppConfig에 있는 memberRepository 빈 이름과 중복된다.
   // */
 
@@ -103,4 +104,16 @@ public class AutoAppConfig {
 public class AutoAppConfig {
 
 }
+
+@Configuration
+@ComponentScan(
+  excludeFilters = @Filter(type = FilterType.ANNOTATION, classes = Configuration.class)
+)
+
+public class AutoAppConfig {
+
+}
+
+
+
  */

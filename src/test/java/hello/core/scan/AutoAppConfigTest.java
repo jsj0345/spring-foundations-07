@@ -59,6 +59,8 @@ public class AutoAppConfigTest {
 
     Autowired된 것도 보여줌.
 
+    @Component부터 스캔하고 안에 @Bean이 있으면 스프링 컨테이너에 다 등록.
+
      */
 
     /*
@@ -86,7 +88,16 @@ public class AutoAppConfigTest {
     MemberService memberService = ac.getBean(MemberService.class);
     Assertions.assertThat(memberService).isInstanceOf(MemberService.class);
   }
+}
 
+public class AutoAppConfigTest {
+
+  @Test
+  void basicScan() {
+    ApplicationContext ac = new AnnotationConfigApplicationContext(AutoAppConfig.class);
+    MemberService memberService = ac.getBean(MemberService.class);
+    Assertions.assertThat(memberService).isInstanceOf(MemberService.class);
+  }
 
 }
  */
