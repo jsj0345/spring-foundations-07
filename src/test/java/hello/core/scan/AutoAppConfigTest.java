@@ -41,6 +41,7 @@ public class AutoAppConfigTest {
     assertThat(memberService).isInstanceOf(MemberService.class);
 
 
+
     /*
     이 코드를 실행하면 Run창에 있는 결과물중에 ClassPathBeanDefinitionScanner가 있음.
     이게 컴포넌트 스캔이 정상적으로 잘 되고 있다는 것을 보여줌.

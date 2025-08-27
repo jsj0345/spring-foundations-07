@@ -36,8 +36,8 @@ import org.springframework.stereotype.Component;
 
 // 주문 서비스 구현체
 //@Component("Service")
-@Component
-@RequiredArgsConstructor // ctrl + f12로 뭐가 만들어졌는지 확인해보자.
+
+// @RequiredArgsConstructor // ctrl + f12로 뭐가 만들어졌는지 확인해보자.
 /*
 final 같은 경우에는 값을 반드시 초기화 해줘야한다. (단 한번만 가능.)
 그런데 이제 생성자를 통한 final 상수를 초기화 한다면.. 반드시 생성자에 초기화 할 때 필요로 하는 변수를 넣어줘야함.(의존관계 주입)
@@ -50,6 +50,7 @@ public OrderServiceImpl(MemberRepository memberRepository, DiscountService disco
   this.discountService = discountService;
 }
  */
+@Component
 public class OrderServiceImpl implements OrderService { // ctrl + shift + t 는 테스트를 만들 수 있다.
 
 
@@ -104,7 +105,7 @@ public class OrderServiceImpl implements OrderService { // ctrl + shift + t 는 
   뭐가 주입 될지 신경 쓸 필요가 없다.
    */
 
-  @Autowired // 만약에 생성자가 1개만 있으면 @Autowired가 없어도 자동으로 연결해준다. (@Autowired가 있다는 뜻)
+   // 만약에 생성자가 1개만 있으면 @Autowired가 없어도 자동으로 연결해준다. (@Autowired가 있다는 뜻)
   //public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
   //  System.out.println("memberRepository = " + memberRepository);
   //  System.out.println("discountPolicy = " + discountPolicy);
@@ -118,14 +119,13 @@ public class OrderServiceImpl implements OrderService { // ctrl + shift + t 는 
     이러한 이유로 생성자 주입을 할 때는 자동으로 의존관계 주입이 일어남.
      */
   //} // 역할과 책임을 적절하게 분리함. 원래 구체적인 클래스를 뭘 써야 할지 봤어야 했는데 그럴 필요 없어짐. (SRP를 지킴)
-
-  /*
+  @Autowired
   public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
     this.memberRepository = memberRepository;
     this.discountPolicy = discountPolicy;
   }
 
-   */
+
 
 
   /*
@@ -281,5 +281,16 @@ public class OrderServiceImpl implements OrderService {
   }
 
 }
+
+생성자 주입 방식 + 불변을 사용하려면
+일단 멤버변수가 final로 선언 되야 한다.
+
+final로 선언 하면 무조건 멤버 변수를 초기화 해줘야 한다
+초기화 방법은 직접 초기화를 하거나 생성자를 통한 초기화 이렇게 두가지만 가능하다.
+
+그런데 보통 스프링에서 DIP를 준수하려면 구체 클래스에 의존하면 안된다.
+그래서 생성자에 인터페이스형을 넣고 구체 클래스를 따로 넣어줘야한다.
+
+근데 이러한 과정을 생략하려면 롬복을 활용해서 @RequiredArgsConstructor를 쓰면 된다.
 
  */
