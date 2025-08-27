@@ -17,6 +17,13 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
  */
 
+
+/*
+스프링에서 빈을 조회할 때, 2개 이상이면 오류가 발생한다.
+이럴때 구체적인 의존은 하지 말자. (DIP 위반)
+
+ */
+
 public class AutoAppConfigTest {
 
   @Test

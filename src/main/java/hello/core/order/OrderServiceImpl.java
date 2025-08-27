@@ -1,5 +1,6 @@
 package hello.core.order;
 
+import hello.core.annotation.MainDiscountPolicy;
 import hello.core.discount.DiscountPolicy;
 import hello.core.discount.FixDiscountPolicy;
 import hello.core.discount.RateDiscountPolicy;
@@ -8,6 +9,7 @@ import hello.core.member.MemberRepository;
 import hello.core.member.MemoryMemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 /*
@@ -120,10 +122,34 @@ public class OrderServiceImpl implements OrderService { // ctrl + shift + t 는 
      */
   //} // 역할과 책임을 적절하게 분리함. 원래 구체적인 클래스를 뭘 써야 할지 봤어야 했는데 그럴 필요 없어짐. (SRP를 지킴)
   @Autowired
-  public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+  public OrderServiceImpl(MemberRepository memberRepository, @MainDiscountPolicy DiscountPolicy discountPolicy) {
+    this.memberRepository = memberRepository;
+    this.discountPolicy = discountPolicy;
+
+    // @Qualifier("mainDiscountPolicy") 한번 써보기 매개변수에 쓰면 된다.
+    /*
+    (MemberRepository memberRepository, @Qualifier("mainDiscountPolicy") DiscountPolicy discountPolicy) 를 보면
+    @Autowired를 할 때, 형태에 맞게 연결을 해준다. (의존성 주입)
+    그런데.. DiscountPolicy의 하위형은 RateDiscount, FixDiscount가 있다.
+    이러면 @Component가 두개 이므로 오류가 발생한다.
+
+    구체적인 의존을 해야하나? 라는 생각이 들겠지만 아니다.
+    주입을 할 때, 이름을 보고 하기 때문에 discountPolicy를 rateDiscountPolicy로 바꿔보자.
+
+    전에 컴포넌트 스캔을 할 때, 맨앞에 대문자는 소문자로 바꾸는 특성이 있기 때문.
+
+    @Autoriwed 필드 명 매칭
+    -> @Autowired는 타입 매칭을 시도하고, 이때 여러 빈이 있으면 필드 이름, 파라미터 이름으로 빈 이름을 추가 매칭한다.
+     */
+  }
+
+  /*
+  @Autowired
+  public OrderServiceImpl(MemberRepository memberRepository, @MainDiscountPolicy DiscountPolicy discountPolicy) {
     this.memberRepository = memberRepository;
     this.discountPolicy = discountPolicy;
   }
+   */
 
 
 
@@ -292,5 +318,104 @@ final로 선언 하면 무조건 멤버 변수를 초기화 해줘야 한다
 그래서 생성자에 인터페이스형을 넣고 구체 클래스를 따로 넣어줘야한다.
 
 근데 이러한 과정을 생략하려면 롬복을 활용해서 @RequiredArgsConstructor를 쓰면 된다.
+
+@Component
+public class OrderServiceImpl implements OrderService {
+
+  private final MemberRepository memberRepository;
+  private final DiscountPolicy discountPolicy;
+
+  @Autowired
+  public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+    this.memberRepository = memberRepository;
+    this.discountPolicy = discountPolicy;
+  }
+
+}
+
+수정자 주입(setter 주입)
+
+-setter라 불리는 필드의 값을 변경하는 수정자 메서드를 통해서 의존관계를 주입하는 방법이다.
+- 선택, 변경 가능성이 있는 의존관계에 사용
+
+@Component
+public class OrderServiceImpl implements OrderService {
+
+  private MemberRepository memberRepository;
+  private DiscountPolicy discountPolicy;
+
+  @Autowired
+  public void setMemberRepository(MemberRepository memberRepository) {
+    this.memberRepository = memberRepository;
+  }
+
+  @Autowired
+  public void setDiscountPolicy(DiscountPolicy discountPolicy) {
+    this.discountPolicy = discountPolicy;
+  }
+
+}
+
+필드 주입
+
+- 이름 그대로 필드에 바로 주입하는 방법이다.
+- 코드가 간결해서 많은 개발자들을 유혹하지만 외부에서 변경이 불가능해서 테스트 하기 힘들다는 치명적인 단점이 있다.
+- DI 프레임워크가 없으면 아무것도 할 수 없다.
+
+@Component
+public class OrderServiceImpl implements OrderService {
+
+  @Autowired
+  private MemberRepository memberRepository;
+  @Autowired
+  private DiscountPolicy discountPolicy;
+
+}
+
+일반 메서드 주입
+
+- 일반 메서드를 통해서 주입 받을 수 있다.
+- 일반적으로 잘 사용하지 않는다.
+
+@Component
+public class OrderServiceImpl implements OrderService {
+
+  private MemberRepository memberRepository;
+  private DiscountPolicy discountPolicy;
+
+  @Autowired
+  public void init(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+    this.memberRepository = memberRepository;
+    this.discountPolicy = discountPolicy;
+  }
+
+}
+
+옵션 처리
+
+자동 주입 대상을 옵션으로 처리하는 방법은 다음과 같다.
+
+- @Autowired(required=false) : 자동 주입할 대상이 없으면 수정자 메서드 자체가 호출 X.
+- org.springframework.lang.@Nullable : 자동 주입할 대상이 없으면 null이 입력된다.
+- Optional<> : 자동 주입할 대상이 없으면 Optional.empty가 입력된다.
+
+// 호출 안됨
+@Autowired(required = false)
+public void setNoBean1(Member member) {
+  System.out.println("setNoBean1 = " + member);
+}
+
+// null 호출
+@Autowired
+public void setNoBean2(@Nullable Member member) {
+  System.out.println("setNoBean2 = " + member);
+}
+
+//Optional.empty 호출
+@Autowired
+public void setNoBean3(Optional<Member> member) {
+  System.out.println("setNoBean3 = " + member);
+}
+
 
  */
