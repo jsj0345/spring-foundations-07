@@ -140,6 +140,31 @@ public class OrderServiceImpl implements OrderService { // ctrl + shift + t 는 
 
     @Autoriwed 필드 명 매칭
     -> @Autowired는 타입 매칭을 시도하고, 이때 여러 빈이 있으면 필드 이름, 파라미터 이름으로 빈 이름을 추가 매칭한다.
+
+    생성자 주입 방식을 선택하는 이유는 여러가지가 있지만, 프레임워크에 의존하지 않고 순수한 자바 언어의 특징을 잘 살리는 방법이기도 하다.
+
+    기본으로 생성자 주입을 사용하고, 필수 값이 아닌 경우에는 수정자 주입 방식을 옵션으로 부여하면 되낟.
+    생성자 주입과 수정자 주입을 동시에 사용할 수 있다.
+
+    항상 생성자 주입을 선택해라! 그리고 가끔 옵션이 필요하면 수정자 주입을 선택해라.
+
+    생성자 자동 주입 예시
+    @Autowired
+    public OrderServiceImpl(MemberRepository memberRepository, @Qualifier("mainDiscountPolicy") DiscountPolicy discountPolicy) {
+      this.memberRepository = memberRepository;
+      this.discountPolicy = discountPolicy;
+    }
+
+    @Qualifier 정리
+    1. @Qualifier끼리 매칭
+    2. 빈 이름 매칭
+    3. NoSuchBeanDefinitionException 예외 발생
+
+    @Autowired
+    public OrderServiceImpl(MemberRepository memberRepository, @MainDiscountPolicy DiscountPolicy discountPolicy) {
+      this.memberRepository = memberRepository;
+      this.discountPolicy = discountPolicy;
+    }
      */
   }
 

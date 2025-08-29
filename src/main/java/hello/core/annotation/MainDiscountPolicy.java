@@ -13,3 +13,23 @@ import java.lang.annotation.*;
 public @interface MainDiscountPolicy { // 어노테이션 만들기
 
 }
+
+/*
+@Qualifier를 우 클릭해서 들어가보자.
+
+package hello.core.annotation;
+
+import org.springframework.beans.factory.annotation.Qualifier;
+
+import java.lang.annotation.*;
+
+@Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE, ElementType.ANNOTATION_TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Qualifier("mainDiscountPolicy")
+public @interface MainDiscountPolicy {
+
+}
+
+
+ */

@@ -20,7 +20,6 @@ public class FixDiscountPolicy implements DiscountPolicy {
     }
   }
 
-
 }
 
 /*

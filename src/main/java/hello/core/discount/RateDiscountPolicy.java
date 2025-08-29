@@ -10,10 +10,27 @@ import org.springframework.stereotype.Component;
 // 정률 할인 정책 구현체 구현
 @Component
 //@Primary // @Primary를 쓰면 빈을 조회할때 하위형이 여러개가 있더라도 그 하위형들중에서 가장 우선순위로 호출.
+// @Primary를 쓰면 빈을 조회할때 하위형이 여러개가 있더라도 그 하위형들중에서 가장 우선순위로 호출.
 // @Qualifier("mainDiscountPolicy")
 //@Qualifier("mainDiscountPolicy") // 만약에 Qualifier()안에 들어가는 문자열을 잘못 쓰면 컴파일 시점엔 못 잡을수도 있음.
 // @MainDiscountPolicy // 여기서는 실수로 문자열을 잘못 쓰면 컴파일 시점에 오류를 바로 잡아줌.
+
+/*
+빈 등록시 @Qualifier를 붙여준다.
+@Component
+@Qualifier("mainDiscountPolicy")
+public class RateDiscountPolicy implements DiscountPolicy {
+
+}
+
+@Component
+@Qualifier("fixDiscountPolicy")
+public class FixDiscountPolicy implements DiscountPolicy {
+
+}
+ */
 @MainDiscountPolicy
+//@MainDiscountPolicy RateDiscountPolicy의 구분자.
 public class RateDiscountPolicy implements DiscountPolicy {
 
   private int discountPercent = 10;
