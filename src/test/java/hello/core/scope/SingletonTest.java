@@ -28,12 +28,12 @@ public class SingletonTest {
   @Scope("singleton")
   static class SingletonBean {
 
-    @PostConstruct
+    @PostConstruct // 초기화 콜백
     public void init() {
       System.out.println("SingletonBean.init");
     }
 
-    @PreDestroy
+    @PreDestroy // 소멸전 콜백
     public void destroy() {
       System.out.println("SingletonBean.destroy");
     }
@@ -71,5 +71,45 @@ public class SingletonTest {
   }
 
 }
+
+package hello.core.scope;
+
+public class SingletonTest {
+
+  @Test
+  public void singletonBeanFind() {
+
+    AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(SingletonBean.class);
+
+    SingletonBean singletonBean1 = ac.getBean(SingletonBean.class);
+    SingletonBean singletonBean2 = ac.getBean(SingletonBean.class);
+
+    System.out.println("singletonBean1 = " + singletonBean1);
+    System.out.println("singletonBean2 = " + singletonBean2);
+    assertThat(singletonBean1).isSameAs(singletonBean2);
+
+    ac.close();
+ }
+
+ @Scope("singleton")
+ static class SingletonBean {
+
+   @PostConstruct
+   public void init() {
+     System.out.println("SingletonBean.init");
+   }
+
+   @PreDestroy
+   public void destroy() {
+     System.out.println("SingletonBean.destroy");
+   }
+
+ }
+
+}
+
+
+
+
 
  */

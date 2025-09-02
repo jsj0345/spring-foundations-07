@@ -179,4 +179,109 @@ public class SingletonWithPrototypeTest1 {
   }
 
 }
+
+public class SingletonWithPrototypeTest1 {
+
+  @Test
+  void prototypeFind() {
+    AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(PrototypeBean.class);
+    PrototypeBean prototypeBean1 = ac.getBean(PrototypeBean.class);
+    prototypeBean1.addCount();
+    assertThat(prototypeBean1.getCount()).isEqualTo(1);
+
+    PrototypeBean prototypeBean2 = ac.getBean(PrototypeBean.class);
+    prototypeBean2.addCount();
+    assertThat(prototypeBean2.getCount()).isEqualTo(1);
+  }
+
+  @Test
+  void singletonClientUsePrototype() {
+    AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(ClientBean.class, PrototypeBean.class);
+
+    ClientBean clientBean1 = ac.getBean(ClientBean.class);
+    int count1 = clientBean1.logic();
+    assertThat(count1).isEqualTo(1);
+
+    ClientBean clientBean2 = ac.getBean(ClientBean.class);
+    int count2 = clientBean2.logic();
+    assertThat(count2).isEqualTo(2);
+  }
+
+  static class ClientBean {
+
+    private final PrototypeBean prototypeBean;
+
+    @Autowired
+    public ClientBean(PrototypeBean prototypeBean) {
+      this.prototypeBean = prototypeBean;
+    }
+
+    public int logic() {
+      prototypeBean.addCount();
+      int count = prototypeBean.getCount();
+      return count;
+    }
+  }
+
+
+  @Scope("prototype")
+  static class PrototypeBean {
+
+    private int count = 0;
+
+    public void addCount() {
+      count++;
+    }
+
+    public int getCount() {
+      return count;
+    }
+
+    @PostConstruct
+    public void init() {
+      System.out.println("PrototypeBean.init " + this);
+    }
+
+    @PreDestroy
+    public void destroy() {
+      System.out.println("PrototypeBean.destroy " + this);
+    }
+
+  }
+
+}
+
+스프링은 일반적으로 싱글톤 빈을 사용하므로, 싱글톤 빈이 프로토타입 빈을 사용하게 된다.
+그런데 싱글톤 빈은 생성 시점에만 의존관계 주입을 받기 때문에, 프로토타입 빈이 새로 생성되기는 하지만,
+싱글톤 빈과 함께 계속 유지되는 것이 문제임.
+
+@Autowired
+private ObjectProvider<PrototypeBean> prototypeBeanProvider;
+
+  public int logic() {
+    PrototypeBean prototypeBean = prototypeBeanProvider.getObject(); // 이때 프르토타입 객체 생성 및 의존관계 주입 후에 반환
+    prototypeBean.addCount();
+    int count = prototypeBean.getCount();
+    return count;
+  }
+
+  ObjectProvider의 getObject()를 호출하면 내부에서는 스프링 컨테이너를 통해 해당 빈을 찾아서 반환.
+
+
+@Autowired
+private Provider<PrototypeBean> provider;
+
+  public int logic() {
+    PrototypeBean prototypeBean = provider.get();
+    prototypeBean.addCount();
+    int count = prototypeBean.getCount();
+    return count;
+  }
+
+
+
+
+
+
+
  */
