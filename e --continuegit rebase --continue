@@ -1,0 +1,24 @@
+[33m63df27d[m[33m ([m[1;36mHEAD[m[33m)[m docs: 서블릿 컨테이너 전후처리와 요청/응답 흐름 정리
+[33m9fec6be[m docs: 웹 서버와 웹 애플리케이션 서버 기초
+[33mfdd0a52[m docs: HTTP 헤더: 캐시와 조건부 요청
+[33m2a1895c[m docs: HTTP 헤더: 캐시와 조건부 요청
+[33m362172d[m docs: HTTP 헤더와 쿠키 기초 정리
+[33m49a06c1[m docs: HTTP 헤더와 쿠키 기초 정리
+[33mde485e7[m docs: HTTP 상태 코드 기초 정리
+[33m0089c5d[m feat: HTTP API 설계 기초와 상태 코드 공부 내용 정리
+[33m291eb5d[m chore: 네트워크 기본 개념 및 웹 요청 흐름 정리
+[33mdf4389d[m chore: 네트워크 기본 개념 및 웹 요청 흐름 정리
+[33maafe731[m chore: 빈 스코프
+[33m7640101[m chore: 스프링 빈 스코프
+[33maba825b[m chore: 스프링 빈 라이프사이클
+[33m5e44c92[m chore: 의존관계 자동 주입
+[33m66bfe52[m chore: 스프링 의존성 주입 및 깃 연동 테스트
+[33m3b17f3c[m chore: 의존관계 자동 주입
+[33mf2ef759[m chore: 컴포넌트 스캔
+[33m6c5a1f1[m chore: 싱글톤 패턴
+[33m232bf96[m chore: 스프링 컨테이너와 빈
+[33m552fcfe[m chore: 스프링 빈과 싱글톤 컨테이너
+[33m18a2f28[m chore: 스프링 컨테이너와 빈
+[33med9dc72[m chore: 스프링 컨테이너와 스프링 빈
+[33md733206[m chore: 회원·주문 도메인 설계 및 구현
+[33m169c251[m chore: 회원·주문 도메인 설계 및 구현
