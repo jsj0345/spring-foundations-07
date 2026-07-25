@@ -30,7 +30,6 @@ spring-foundations-07
 ├── gradle
 ├── src
 │   ├── main
-│   │── docs 
 │   └── test
 │       └── java
 │           └── hello
