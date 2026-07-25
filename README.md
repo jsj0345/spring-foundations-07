@@ -30,6 +30,7 @@ spring-foundations-07
 ├── gradle
 ├── src
 │   ├── main
+│   │── docs 
 │   └── test
 │       └── java
 │           └── hello
@@ -55,3 +56,7 @@ spring-foundations-07
 - Gradle
 - IntelliJ IDEA
 - JUnit
+
+## 참고
+- 코드 출처 : 김영한님 강의 -> 스프링 핵심 원리 - 기본편
+- 웹 기본 지식 내용 정리할 때 참고했던 곳 : 모든 개발자를 위한 HTTP 웹 기본 지식 
